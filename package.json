@@ -1,0 +1,19 @@
+{
+  "name": "license-gen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "massarg": "1.0.7-pre.1",
+    "simple-scaffold": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5"
+  }
+}
