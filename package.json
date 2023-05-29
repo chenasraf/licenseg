@@ -1,14 +1,14 @@
 {
-  "name": "license-gen",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "licenseg",
+  "version": "0.1.0",
+  "description": "Generate LICENSE files for your projects",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Chen Asraf <contact@casraf.dev>",
+  "license": "MIT",
   "dependencies": {
     "massarg": "1.0.7-pre.1",
     "simple-scaffold": "^1.7.0"

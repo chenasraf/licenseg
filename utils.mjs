@@ -3,7 +3,7 @@ import * as path from 'path'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 
-export const CACHE_DIR = process.env.HOME + '/.cache/license-gen'
+export const CACHE_DIR = process.env.HOME + '/.cache/licenseg'
 const execAsync = promisify(exec)
 
 export async function exists(f) {
