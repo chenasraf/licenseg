@@ -1,3 +1,4 @@
+// @ts-check
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import { exec } from 'child_process'
@@ -6,6 +7,10 @@ import { promisify } from 'util'
 export const CACHE_DIR = process.env.HOME + '/.cache/licenseg'
 const execAsync = promisify(exec)
 
+/**
+ * @param {string} f file path
+ * @returns {Promise<boolean>}
+ */
 export async function exists(f) {
   try {
     await fs.access(f)

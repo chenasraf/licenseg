@@ -1,8 +1,12 @@
 {
   "name": "licenseg",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate LICENSE files for your projects",
   "main": "index.mjs",
+  "bin": {
+    "licenseg": "./cli.mjs"
+  },
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
