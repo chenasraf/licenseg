@@ -72,9 +72,31 @@ export default function licenceg(args) {
       name: 'license',
       aliases: ['l'],
       isDefault: true,
-      description: 'License to generate',
+      description:
+        'License to generate (the flag is optional, you can just supply the license name)',
       parse: (s) => s.toLowerCase(),
       // commands: ['main'],
+    })
+    .help({
+      binName: 'licenseg',
+      header: 'Generate a license file for your project',
+      usageExample: [
+        '[options] [command]',
+        'licenseg --name "John Doe" mit   # generate MIT license',
+        'licenseg ls                      # list all licenses',
+      ].join('\n'),
+    })
+    .example({
+      description: 'Generate MIT license',
+      input: 'licenseg --name "John Doe" mit',
+    })
+    .example({
+      description: 'List all licenses',
+      input: 'licenseg ls',
+    })
+    .example({
+      description: 'Preview a license',
+      input: 'licenseg p mit',
     })
     .parse(args)
 }
