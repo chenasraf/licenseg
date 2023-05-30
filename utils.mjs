@@ -29,6 +29,7 @@ export async function cacheLicenses() {
   const gitUrl = 'git@github.com:github/choosealicense.com.git'
 
   await execAsync(`git clone --depth=1 ${gitUrl} ${CACHE_DIR}`)
+
   if (!exists(`${CACHE_DIR}/_licenses`)) {
     console.error('Error cloning choosealicense.com')
     process.exit(1)
@@ -37,23 +38,30 @@ export async function cacheLicenses() {
   const files = await fs.readdir(CACHE_DIR)
   for (const file of files) {
     if (file === '_licenses') continue
-    if ((await fs.lstat(path.join(CACHE_DIR, file))).isDirectory()) {
-      await execAsync(`rm -rf ${path.join(CACHE_DIR, file)}`)
+    const filePath = path.join(CACHE_DIR, file)
+    const lstat = await fs.lstat(filePath)
+
+    if (lstat.isDirectory()) {
+      await execAsync(`rm -rf ${filePath}`)
       continue
     }
-    fs.unlink(path.join(CACHE_DIR, file))
+    fs.unlink(filePath)
   }
+
   const licenseFiles = await fs.readdir(`${CACHE_DIR}/_licenses`)
+
   for (const file of licenseFiles) {
-    const contents = await fs.readFile(`${CACHE_DIR}/_licenses/${file}`, 'utf8')
-    const replaced = contents
+    const originalContents = await fs.readFile(`${CACHE_DIR}/_licenses/${file}`, 'utf8')
+    const replacedContents = originalContents
       .split('---')
       .slice(-1)
       .join('')
       .replace(/\[year\]/g, '{{ year }}')
       .replace(/\[fullname\]/g, '{{ name }}')
       .trim()
-    await fs.writeFile(`${CACHE_DIR}/_licenses/${file}`, replaced)
+
+    await fs.writeFile(`${CACHE_DIR}/_licenses/${file}`, replacedContents)
   }
+
   console.log('Done.')
 }

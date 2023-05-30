@@ -7,7 +7,7 @@ import { CACHE_DIR, exists, cacheLicenses } from './utils.mjs'
 /**
  * @param {string[]} args
  */
-export default function licenceg(args) {
+export default function licenseg(args) {
   massarg()
     .main(async (args) => {
       await cacheLicenses()
@@ -100,3 +100,5 @@ export default function licenceg(args) {
     })
     .parse(args)
 }
+
+export { licenseg }
