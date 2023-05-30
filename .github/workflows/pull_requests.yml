@@ -2,7 +2,7 @@ name: Pull Requests
 
 on:
   pull_request:
-    branches: [master, develop]
+    branches: [ master, develop ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,4 +15,4 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
       - run: pnpm build
-      - run: pnpm test
+      # - run: pnpm test

@@ -3,13 +3,14 @@
   "version": "0.1.1",
   "description": "Generate LICENSE files for your projects",
   "main": "index.mjs",
+  "packageManager": "pnpm@8.5.0",
   "bin": {
     "licenseg": "./cli.mjs"
   },
   "type": "module",
   "scripts": {
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0; echo \"# Change Log\n\n$(cat CHANGELOG.md)\" > CHANGELOG.md",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Warning: no test specified, skipping\""
   },
   "keywords": [],
   "author": "Chen Asraf <contact@casraf.dev>",
