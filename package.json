@@ -8,6 +8,7 @@
   },
   "type": "module",
   "scripts": {
+    "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0; echo \"# Change Log\n\n$(cat CHANGELOG.md)\" > CHANGELOG.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,6 +19,14 @@
     "simple-scaffold": "^1.7.0"
   },
   "devDependencies": {
-    "@types/node": "^20.2.5"
+    "@types/node": "^20.2.5",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "conventional-changelog": "^3.1.25",
+    "conventional-changelog-cli": "^2.2.2",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "semantic-release": "^21.0.1",
+    "semantic-release-conventional-commits": "^3.0.0"
   }
 }
