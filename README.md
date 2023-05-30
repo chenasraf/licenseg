@@ -14,17 +14,17 @@ Or install globally:
 
 ```shell
 # with your favorite package manager
-pnpm add -g licenceg
-yarn global add licenceg
-pnpm i -g licenceg
+pnpm add -g licenseg
+yarn global add licenseg
+pnpm i -g licenseg
 
 # then use
-licenceg --name "My Name" mit
+licenseg --name "My Name" mit
 ```
 
 ## Commands
 
-See the commands at any time by using `npx licenceg -h`.
+See the commands at any time by using `npx licenseg -h`.
 
 | Command           | Description                |
 | ----------------- | -------------------------- |
