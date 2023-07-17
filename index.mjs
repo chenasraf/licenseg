@@ -1,8 +1,22 @@
 // @ts-check
 import { massarg } from 'massarg'
-import { Scaffold } from 'simple-scaffold'
 import * as fs from 'fs/promises'
 import { CACHE_DIR, exists, cacheLicenses } from './utils.mjs'
+
+/**
+ * @param {string} license
+ * @param {object} args
+ * @returns {string}
+ */
+function formatLicense(license, args) {
+  if (!license) throw new Error('Invalid license')
+  license = license
+    .trim()
+    .replace(/\{\{ year \}\}/gi, args.year ?? new Date().getFullYear())
+    .replace(/\{\{ name \}\}/gi, args.name ?? 'Your Name')
+  if (args.replaceCopyrightSymbol) license = license.replace(/\(c\)/gi, '©')
+  return license
+}
 
 /**
  * @param {string[]} args
@@ -15,7 +29,7 @@ export default function licenseg(args) {
         console.log('You must supply a name with the --name flag.')
         return
       }
-      if (!args.overwrite && (await exists('LICENSE'))) {
+      if (args.overwrite == null && (await exists('LICENSE'))) {
         // get user input from stdin
         const input = await new Promise((resolve) => {
           console.log('LICENSE file already exists. Overwrite? [Y/n]')
@@ -26,22 +40,20 @@ export default function licenseg(args) {
           console.log('License not generated.')
           return
         }
+      } else if (args.overwrite === false && (await exists('LICENSE'))) {
+        console.log('License not generated.')
+        return
       }
-      await Scaffold({
-        templates: [`${CACHE_DIR}/_licenses/${args.license}.txt`],
-        output: '.',
-        name: args.name,
-        data: {
-          year: args.year ?? new Date().getFullYear(),
-        },
-        beforeWrite: (content) => {
-          if (args.replaceCopyrightSymbol) return content.toString().replace(/\(c\)/gi, '©')
-          return content
-        },
-        quiet: true,
-      })
-      if (await exists('LICENSE')) await fs.unlink('LICENSE')
-      await fs.rename(`${args.license}.txt`, 'LICENSE')
+      /** @type {string} */
+      let template
+      try {
+        template = await fs.readFile(`${CACHE_DIR}/_licenses/${args.license}.txt`, 'utf8')
+      } catch (e) {
+        console.log(`License ${args.license} not found.`)
+        return
+      }
+      const license = formatLicense(template, args)
+      await fs.writeFile('LICENSE', license)
       console.log(`File ${process.cwd()}/LICENSE created.`)
       return
     })
@@ -80,16 +92,7 @@ export default function licenseg(args) {
         }
         const contents = await fs.readFile(`${CACHE_DIR}/_licenses/${license}`, 'utf8')
 
-        let replaced = contents
-          .split('---')
-          .slice(-1)
-          .join('')
-          .trim()
-          .replace(/\{\{ year \}\}/gi, args.year ?? new Date().getFullYear())
-          .replace(/\{\{ name \}\}/gi, args.name ?? 'Your Name')
-        if (args.replaceCopyrightSymbol) {
-          replaced = replaced.replace(/\(c\)/gi, '©')
-        }
+        const replaced = formatLicense(contents, args)
         console.log(replaced)
       },
     })

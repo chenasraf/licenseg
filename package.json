@@ -16,14 +16,13 @@
   "author": "Chen Asraf <contact@casraf.dev>",
   "license": "MIT",
   "dependencies": {
-    "massarg": "1.0.7-pre.1",
-    "simple-scaffold": "^1.7.0"
+    "massarg": "1.0.7-pre.1"
   },
   "devDependencies": {
-    "@types/node": "^20.2.5",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
+    "@types/node": "^20.2.5",
     "conventional-changelog": "^3.1.25",
     "conventional-changelog-cli": "^2.2.2",
     "conventional-changelog-conventionalcommits": "^5.0.0",
