@@ -7,7 +7,7 @@ const releaseRules = [
   { type: 'perf', section: 'Misc', release: 'patch' },
   { type: 'build', section: 'Build', release: 'patch' },
   { type: 'docs', section: 'Build', release: false },
-  { type: 'test', section: 'Tests', release: 'patch' },
+  { type: 'test', section: 'Tests', release: false },
 ]
 
 /** @type {import('semantic-release').Options} */
@@ -57,14 +57,7 @@ export const plugins = [
   [
     '@semantic-release/npm',
     {
-      npmPublish: false,
-    },
-  ],
-  [
-    '@semantic-release/npm',
-    {
       npmPublish: true,
-      pkgRoot: 'dist',
     },
   ],
   [

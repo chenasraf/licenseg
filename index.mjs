@@ -11,18 +11,39 @@ export default function licenseg(args) {
   massarg()
     .main(async (args) => {
       await cacheLicenses()
+      if (!args.name) {
+        console.log('You must supply a name with the --name flag.')
+        return
+      }
+      if (!args.overwrite && (await exists('LICENSE'))) {
+        // get user input from stdin
+        const input = await new Promise((resolve) => {
+          console.log('LICENSE file already exists. Overwrite? [Y/n]')
+          process.stdin.once('data', (data) => resolve(data.toString().trim()))
+        })
+        process.stdin.unref()
+        if (input && input.toLowerCase() !== 'y') {
+          console.log('License not generated.')
+          return
+        }
+      }
       await Scaffold({
         templates: [`${CACHE_DIR}/_licenses/${args.license}.txt`],
         output: '.',
         name: args.name,
         data: {
-          year: new Date().getFullYear(),
+          year: args.year ?? new Date().getFullYear(),
+        },
+        beforeWrite: (content) => {
+          if (args.replaceCopyrightSymbol) return content.toString().replace(/\(c\)/gi, '©')
+          return content
         },
         quiet: true,
       })
       if (await exists('LICENSE')) await fs.unlink('LICENSE')
       await fs.rename(`${args.license}.txt`, 'LICENSE')
       console.log(`File ${process.cwd()}/LICENSE created.`)
+      return
     })
     .command({
       name: 'list',
@@ -58,7 +79,17 @@ export default function licenseg(args) {
           return
         }
         const contents = await fs.readFile(`${CACHE_DIR}/_licenses/${license}`, 'utf8')
-        const replaced = contents.split('---').slice(-1).join('').trim()
+
+        let replaced = contents
+          .split('---')
+          .slice(-1)
+          .join('')
+          .trim()
+          .replace(/\{\{ year \}\}/gi, args.year ?? new Date().getFullYear())
+          .replace(/\{\{ name \}\}/gi, args.name ?? 'Your Name')
+        if (args.replaceCopyrightSymbol) {
+          replaced = replaced.replace(/\(c\)/gi, '©')
+        }
         console.log(replaced)
       },
     })
@@ -76,6 +107,19 @@ export default function licenseg(args) {
         'License to generate (the flag is optional, you can just supply the license name)',
       parse: (s) => s.toLowerCase(),
       // commands: ['main'],
+    })
+    .option({
+      name: 'replace-copyright-symbol',
+      aliases: ['rcs', 'C'],
+      boolean: true,
+      defaultValue: true,
+      description: 'Replace the (c) symbol with the symbol ©.',
+    })
+    .option({
+      name: 'overwrite',
+      aliases: ['w'],
+      boolean: true,
+      description: 'Overwrite existing LICENSE file.',
     })
     .help({
       binName: 'licenseg',
