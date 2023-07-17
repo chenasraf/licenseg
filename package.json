@@ -22,11 +22,11 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
-    "@types/node": "^20.2.5",
+    "@types/node": "^20.4.2",
     "conventional-changelog": "^3.1.25",
     "conventional-changelog-cli": "^2.2.2",
     "conventional-changelog-conventionalcommits": "^5.0.0",
-    "semantic-release": "^21.0.1",
+    "semantic-release": "^21.0.7",
     "semantic-release-conventional-commits": "^3.0.0"
   }
 }
