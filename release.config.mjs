@@ -16,9 +16,7 @@ export const branches = [
   'master',
   'next',
   'next-major',
-  { name: 'develop', prerelease: true },
-  { name: 'beta', prerelease: true },
-  { name: 'alpha', prerelease: true },
+  { name: 'pre', prerelease: true },
 ]
 export const analyzeCommits = {
   path: 'semantic-release-conventional-commits',
