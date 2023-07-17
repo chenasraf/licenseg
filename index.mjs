@@ -1,22 +1,7 @@
 // @ts-check
 import { massarg } from 'massarg'
 import * as fs from 'fs/promises'
-import { CACHE_DIR, exists, cacheLicenses } from './utils.mjs'
-
-/**
- * @param {string} license
- * @param {object} args
- * @returns {string}
- */
-function formatLicense(license, args) {
-  if (!license) throw new Error('Invalid license')
-  license = license
-    .trim()
-    .replace(/\{\{ year \}\}/gi, args.year ?? new Date().getFullYear())
-    .replace(/\{\{ name \}\}/gi, args.name ?? 'Your Name')
-  if (args.replaceCopyrightSymbol) license = license.replace(/\(c\)/gi, '©')
-  return license
-}
+import { CACHE_DIR, exists, cacheLicenses, formatLicense } from './utils.mjs'
 
 /**
  * @param {string[]} args
@@ -92,7 +77,7 @@ export default function licenseg(args) {
         }
         const contents = await fs.readFile(`${CACHE_DIR}/_licenses/${license}`, 'utf8')
 
-        const replaced = formatLicense(contents, args)
+        const replaced = formatLicense(contents, { ...args, name: args.name || '[Your Name]' })
         console.log(replaced)
       },
     })

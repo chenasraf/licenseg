@@ -51,17 +51,25 @@ export async function cacheLicenses() {
   const licenseFiles = await fs.readdir(`${CACHE_DIR}/_licenses`)
 
   for (const file of licenseFiles) {
-    const originalContents = await fs.readFile(`${CACHE_DIR}/_licenses/${file}`, 'utf8')
-    const replacedContents = originalContents
-      .split('---')
-      .slice(-1)
-      .join('')
-      .replace(/\[year\]/g, '{{ year }}')
-      .replace(/\[fullname\]/g, '{{ name }}')
-      .trim()
-
-    await fs.writeFile(`${CACHE_DIR}/_licenses/${file}`, replacedContents)
+    const original = await fs.readFile(`${CACHE_DIR}/_licenses/${file}`, 'utf8')
+    const replaced = original.split('---').slice(-1).join('').trim()
+    await fs.writeFile(`${CACHE_DIR}/_licenses/${file}`, replaced)
   }
 
   console.log('Done.')
+}
+
+/**
+ * @param {string} license
+ * @param {object} args
+ * @returns {string}
+ */
+export function formatLicense(license, args) {
+  if (!license) throw new Error('Invalid license')
+  license = license
+    .trim()
+    .replace(/\[year\]/g, args.year || new Date().getFullYear())
+    .replace(/\[fullname\]/g, args.name)
+  if (args.replaceCopyrightSymbol) license = license.replace(/\(c\)/gi, '©')
+  return license
 }

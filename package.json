@@ -1,6 +1,6 @@
 {
   "name": "licenseg",
-  "version": "0.1.1",
+  "version": "0.0.0",
   "description": "Generate LICENSE files for your projects",
   "main": "index.mjs",
   "packageManager": "pnpm@8.5.0",
@@ -9,10 +9,16 @@
   },
   "type": "module",
   "scripts": {
+    "cmd": "node cli.mjs",
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0; echo \"# Change Log\n\n$(cat CHANGELOG.md)\" > CHANGELOG.md",
     "test": "echo \"Warning: no test specified, skipping\""
   },
-  "keywords": [],
+  "keywords": [
+    "license",
+    "generator",
+    "cli",
+    "mit"
+  ],
   "author": "Chen Asraf <contact@casraf.dev>",
   "license": "MIT",
   "dependencies": {
