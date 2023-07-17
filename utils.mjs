@@ -20,9 +20,24 @@ export async function exists(f) {
   }
 }
 
+const LATEST_CACHE_VERSION = 2
+
 export async function cacheLicenses() {
   if (await exists(CACHE_DIR)) {
-    return
+    let cacheVersion
+
+    try {
+      cacheVersion = await fs.readFile(path.join(CACHE_DIR, 'VERSION'), 'utf8')
+    } catch {
+      cacheVersion = '1'
+    }
+
+    if (parseInt(cacheVersion) < LATEST_CACHE_VERSION) {
+      console.log('Cache outdated. Clearing...')
+      await fs.rm(CACHE_DIR, { recursive: true })
+    } else {
+      return
+    }
   }
 
   console.log('Caching licenses...')
@@ -55,6 +70,8 @@ export async function cacheLicenses() {
     const replaced = original.split('---').slice(-1).join('').trim()
     await fs.writeFile(`${CACHE_DIR}/_licenses/${file}`, replaced)
   }
+
+  await fs.writeFile(path.join(CACHE_DIR, 'VERSION'), LATEST_CACHE_VERSION.toString())
 
   console.log('Done.')
 }

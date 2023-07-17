@@ -15,7 +15,6 @@ export default function licenseg(args) {
         return
       }
       if (args.overwrite == null && (await exists('LICENSE'))) {
-        // get user input from stdin
         const input = await new Promise((resolve) => {
           console.log('LICENSE file already exists. Overwrite? [Y/n]')
           process.stdin.once('data', (data) => resolve(data.toString().trim()))
