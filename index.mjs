@@ -100,6 +100,13 @@ export default function licenseg(args) {
       // commands: ['main'],
     })
     .option({
+      name: 'year',
+      aliases: ['y'],
+      description: 'Year to use in the license. Defaults to current year.',
+      // commands: ['main'],
+      parse: (s) => parseInt(s),
+    })
+    .option({
       name: 'license',
       aliases: ['l'],
       isDefault: true,
